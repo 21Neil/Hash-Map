@@ -138,4 +138,4 @@ function LinkedList() {
   };
 }
 
-export default LinkedList();
+export default LinkedList;

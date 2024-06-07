@@ -21,7 +21,7 @@ function HashMap() {
     if (index < 0 || index >= buckets.length) {
       throw new Error('Trying to access index out of bound');
     }
-    if (buckets[index] === null) buckets[index] = LinkedList;
+    if (buckets[index] === null) buckets[index] = LinkedList();
     console.log('set', buckets[index], index)
     buckets[index].append(key, value);
   };
