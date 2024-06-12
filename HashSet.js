@@ -1,6 +1,6 @@
 import LinkedList from './LinkedList.js';
 
-function HashMap() {
+function HashSet() {
   let bucketSize = 16;
   let loadFactor = 0.75;
   let buckets = Array(bucketSize).fill(null);
@@ -25,7 +25,7 @@ function HashMap() {
     });
   };
 
-  const set = (key, value) => {
+  const set = (key) => {
     if (length() / bucketSize >= loadFactor) expandBuckets();
     const index = hash(key);
     if (index < 0 || index >= buckets.length) {
@@ -33,10 +33,10 @@ function HashMap() {
     }
     if (buckets[index] === null) buckets[index] = LinkedList();
     if (buckets[index].contains(key)) {
-      buckets[index].change(key, value);
+      buckets[index].change(key);
       return;
     }
-    buckets[index].append(key, value);
+    buckets[index].append(key);
   };
 
   const get = key => {
@@ -140,4 +140,4 @@ function HashMap() {
   };
 }
 
-export default HashMap;
+export default HashSet;

@@ -66,13 +66,13 @@ function LinkedList() {
     return;
   };
 
-  const contains = value => {
+  const contains = key => {
     let tmp = head;
     if (tmp === null) return false;
-    while (tmp.value !== value && tmp.nextNode !== null) {
+    while (tmp.key !== key && tmp.nextNode !== null) {
       tmp = tmp.nextNode;
     }
-    if (tmp.value === value) return true;
+    if (tmp.key === key) return true;
     return false;
   };
 
@@ -115,11 +115,21 @@ function LinkedList() {
     }
     if (index === 0) {
       head = head.nextNode;
-      return
+      return;
     }
     let prevNode = at(index - 1);
     let nextNode = at(index + 1);
     prevNode.nextNode = nextNode;
+  };
+
+  const change = (key, value) => {
+    let tmp = head;
+    if (tmp === null) return;
+    while (tmp.nextNode !== null && tmp.key !== key) {
+      tmp = tmp.nextNode;
+    }
+    if (tmp.key === key) tmp.value = value;
+    return;
   };
 
   return {
@@ -135,6 +145,7 @@ function LinkedList() {
     toString,
     insertAt,
     removeAt,
+    change,
   };
 }
 
