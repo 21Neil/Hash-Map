@@ -26,7 +26,6 @@ function HashMap() {
   };
 
   const set = (key, value) => {
-    if (length() / bucketSize >= loadFactor) expandBuckets();
     const index = hash(key);
     if (index < 0 || index >= buckets.length) {
       throw new Error('Trying to access index out of bound');
@@ -37,6 +36,7 @@ function HashMap() {
       return;
     }
     buckets[index].append(key, value);
+    if (length() / bucketSize > loadFactor) expandBuckets();
   };
 
   const get = key => {
@@ -52,8 +52,8 @@ function HashMap() {
     if (index < 0 || index >= buckets.length) {
       throw new Error('Trying to access index out of bound');
     }
-    if (buckets[index] === null) return null;
-    return buckets[index].find(key) === null ? false : true;
+    if (buckets[index] === null) return false;
+    return buckets[index].find(key) === (null || false) ? false : true;
   };
 
   const remove = key => {
@@ -61,7 +61,7 @@ function HashMap() {
     if (index < 0 || index >= buckets.length) {
       throw new Error('Trying to access index out of bound');
     }
-    if (has(key) === null) return false;
+    if (has(key) === false) return false;
     const linkedListIndex = buckets[index].find(key);
     buckets[index].removeAt(linkedListIndex);
     return true;

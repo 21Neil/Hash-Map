@@ -26,7 +26,6 @@ function HashSet() {
   };
 
   const set = (key) => {
-    if (length() / bucketSize >= loadFactor) expandBuckets();
     const index = hash(key);
     if (index < 0 || index >= buckets.length) {
       throw new Error('Trying to access index out of bound');
@@ -37,6 +36,7 @@ function HashSet() {
       return;
     }
     buckets[index].append(key);
+    if (length() / bucketSize > loadFactor) expandBuckets();
   };
 
   const get = key => {
@@ -44,7 +44,7 @@ function HashSet() {
     if (index < 0 || index >= buckets.length) {
       throw new Error('Trying to access index out of bound');
     }
-    return buckets[index].getValue(key);
+    return has(key) ? key : null;
   };
 
   const has = key => {
@@ -52,8 +52,8 @@ function HashSet() {
     if (index < 0 || index >= buckets.length) {
       throw new Error('Trying to access index out of bound');
     }
-    if (buckets[index] === null) return null;
-    return buckets[index].find(key) === null ? false : true;
+    if (buckets[index] === null) return false;
+    return buckets[index].find(key) === (null || false) ? false : true;
   };
 
   const remove = key => {
@@ -61,7 +61,7 @@ function HashSet() {
     if (index < 0 || index >= buckets.length) {
       throw new Error('Trying to access index out of bound');
     }
-    if (has(key) === null) return false;
+    if (has(key) === false) return false;
     const linkedListIndex = buckets[index].find(key);
     buckets[index].removeAt(linkedListIndex);
     return true;
@@ -84,6 +84,7 @@ function HashSet() {
 
   const keys = () => {
     const keyList = [];
+    if(length() === 0 ) return keyList
     buckets.forEach(item => {
       if (item !== null) {
         let tmp = item.getHead();
@@ -97,31 +98,16 @@ function HashSet() {
     return keyList;
   };
 
-  const values = () => {
-    const valueList = [];
-    buckets.forEach(item => {
-      if (item !== null) {
-        let tmp = item.getHead();
-        valueList.push(tmp.value);
-        while (tmp.nextNode !== null) {
-          tmp = tmp.nextNode;
-          valueList.push(tmp.value);
-        }
-      }
-    });
-    return valueList;
-  };
-
   const entries = () => {
     const entriesList = [];
     buckets.forEach(item => {
       if (item !== null) {
         let tmp = item.getHead();
         while (tmp.nextNode !== null) {
-          entriesList.push([tmp.key, tmp.value]);
+          entriesList.push([tmp.key]);
           tmp = tmp.nextNode;
         }
-        entriesList.push([tmp.key, tmp.value]);
+        entriesList.push([tmp.key]);
       }
     });
     return entriesList;
@@ -135,7 +121,6 @@ function HashSet() {
     length,
     clear,
     keys,
-    values,
     entries,
   };
 }
