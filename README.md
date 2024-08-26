@@ -1,6 +1,6 @@
 # Hash-Map
 
-使用 JavaScript 製作的 HashMap。使用 LinkedList 來處理哈希碰撞，並支援動態調整哈希桶大小以降低碰撞機率。
+使用 JavaScript 製作的 HashMap，使用 LinkedList 來處理哈希碰撞，並支援動態調整哈希桶大小以降低碰撞機率。
 
 ## 功能與方法
 
